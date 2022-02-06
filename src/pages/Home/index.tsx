@@ -24,17 +24,17 @@ export const HomePage = ({
     setTestimonial(loremIpsum.generateSentences());
   }, []);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setTimeToggle(false);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeToggle(false);
 
-  //     setTimeout(() => {
-  //       setTimeToggle(true);
-  //     }, 200);
-  //   }, 1000);
+      setTimeout(() => {
+        setTimeToggle(true);
+      }, 200);
+    }, 1000);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     setDate(new Date());
