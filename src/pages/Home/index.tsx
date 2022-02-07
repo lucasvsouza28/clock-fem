@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BsFillSunFill, BsFillMoonFill } from 'react-icons/bs'
 import { LoremIpsum } from 'lorem-ipsum'
-import { styled, theme, lightTheme } from '../../../stitches.config';
+import { styled, theme, lightTheme, keyframes } from '../../../stitches.config';
 import { BackgroundImage } from '../../components/BackgroundImage';
 import { Clock } from "./components/Clock";
 import { Button } from "./components/Button";
@@ -48,6 +48,32 @@ export const HomePage = ({
     onThemeChanged(datePart === 'day' ? lightTheme : theme);
   }, [datePart]);
 
+  const fadeIn = keyframes({
+    'from': {
+      opacity: '0',
+      bottom: '-30%',
+      display: 'none',
+    },
+    'to': {
+      opacity: '1',
+      bottom: '0',
+      display: 'grid',
+    }
+  });
+
+  const fadeOut = keyframes({
+    'from': {
+      opacity: '1',
+      bottom: '0',
+      display: 'grid'
+    },
+    'to': {
+      opacity: '0',
+      bottom: '-30%',
+      display: 'none'
+    }
+  });
+
   const Main = styled('main', {
     display: 'flex',
     flex: '1',
@@ -66,9 +92,19 @@ export const HomePage = ({
     }
   });
 
+  const Greetings = styled('h4', {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+  });
+
   const Details = styled('section', {
-    display: showDetais ? 'grid' : 'none',
+    position: 'relative',
+    bottom: showDetais ? '0' : '-30%',
+
+    display: 'grid',
     opacity: showDetais ? '1' : '0',
+
     gridTemplateColumns: '1fr 1fr',
 
     padding: '48px 26px',
@@ -77,7 +113,7 @@ export const HomePage = ({
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     color: '$primary',
 
-    transition: 'all 1s linear',
+    animation: `${showDetais ? fadeIn : fadeOut} .3s ease`,
 
     height: '30%',
 
@@ -115,17 +151,17 @@ export const HomePage = ({
         )}
 
         <div>
-          <h4>
+          <Greetings>
             { datePart === 'day' ? (
               <>
-                <BsFillSunFill /> good morning, it's currently
+                <BsFillSunFill size={22} /> good morning, it's currently
               </>
             ) : (
               <>
-                <BsFillMoonFill /> good evening, it's currently
+                <BsFillMoonFill size={22} /> good evening, it's currently
               </>
             )}
-          </h4>
+          </Greetings>
 
           <Clock
             date={date}
