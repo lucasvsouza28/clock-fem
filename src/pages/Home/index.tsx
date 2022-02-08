@@ -14,7 +14,6 @@ export const HomePage = ({
   onThemeChanged,
 }: HomePageProps) => {
   const [date, setDate] = useState(new Date());
-  const [timeToggle, setTimeToggle] = useState(true);
   const [datePart, setDatePart] = useState<'day' | 'night'>('day');
   const [showDetais, setShowDetais] = useState<boolean>(false);
   const [testimonial, setTestimonial] = useState('');
@@ -25,20 +24,15 @@ export const HomePage = ({
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeToggle(false);
 
-      setTimeout(() => {
-        setTimeToggle(true);
-      }, 200);
+    const timeoutId = setTimeout(() => {
+      setDate(new Date());
     }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
 
-  useEffect(() => {
-    setDate(new Date());
-  }, [timeToggle]);
+    return () => clearTimeout(timeoutId);
+
+  }, []);
 
   useEffect(() => {
     setDatePart(date.getHours() < 18 ? 'day' : 'night');
@@ -46,7 +40,7 @@ export const HomePage = ({
 
   useEffect(() => {
     onThemeChanged(datePart === 'day' ? lightTheme : theme);
-  }, [datePart]);
+  }, [datePart, onThemeChanged]);
 
   const fadeIn = keyframes({
     'from': {
@@ -99,8 +93,8 @@ export const HomePage = ({
   });
 
   const Details = styled('section', {
-    position: 'relative',
-    bottom: showDetais ? '0' : '-30%',
+    position: 'fixed',
+    bottom: showDetais ? '0' : '-50%',
 
     display: 'grid',
     opacity: showDetais ? '1' : '0',
@@ -115,6 +109,7 @@ export const HomePage = ({
 
     animation: `${showDetais ? fadeIn : fadeOut} .3s ease`,
 
+    width: '100%',
     height: '30%',
 
     '@lg': {
@@ -165,7 +160,6 @@ export const HomePage = ({
 
           <Clock
             date={date}
-            timeToggle={timeToggle}
           />
 
           <h6>
