@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { getDayOfYear, getWeek } from 'date-fns'
 import { BsFillSunFill, BsFillMoonFill } from 'react-icons/bs'
 import { LoremIpsum } from 'lorem-ipsum'
 import { styled, theme, lightTheme, keyframes } from '../../../stitches.config';
@@ -180,16 +181,16 @@ export const HomePage = ({
 
       <Details>
         <DetailsLabel>CURRENT TIMEZONE</DetailsLabel>
-        <DetailsValue>Europe/London</DetailsValue>
+        <DetailsValue>{Intl.DateTimeFormat().resolvedOptions().timeZone}</DetailsValue>
 
         <DetailsLabel>Day of the year</DetailsLabel>
-        <DetailsValue>295</DetailsValue>
+        <DetailsValue>{getDayOfYear(date)}</DetailsValue>
 
         <DetailsLabel>Day of the week</DetailsLabel>
-        <DetailsValue>5</DetailsValue>
+        <DetailsValue>{date.getDay()}</DetailsValue>
 
         <DetailsLabel>Week number</DetailsLabel>
-        <DetailsValue>42</DetailsValue>
+        <DetailsValue>{getWeek(date)}</DetailsValue>
       </Details>
     </>
   );
