@@ -12,7 +12,7 @@ type HomePageProps = {
 
 export const HomePage = ({
 }: HomePageProps) => {
-  const [date, setDate] = useState(new Date());
+  const [date] = useState(new Date());
   const [datePart, setDatePart] = useState<'day' | 'night'>('day');
   const [showDetais, setShowDetais] = useState<boolean>(false);
   const [testimonial, setTestimonial] = useState('');
@@ -21,14 +21,6 @@ export const HomePage = ({
     const loremIpsum = new LoremIpsum();
     setTestimonial(loremIpsum.generateSentences());
   }, [setTestimonial]);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setDate(new Date());
-    }, 1000);
-
-    return () => clearTimeout(timeoutId);
-  }, [setDate]);
 
   useEffect(() => {
     setDatePart(date.getHours() < 18 ? 'day' : 'night');
@@ -198,7 +190,13 @@ export const HomePage = ({
       />
       <Main>
         { !showDetais && (
-          <Box css={{ gridArea: 'testimonial' }}>
+          <Box css={{
+            gridArea: 'testimonial',
+
+            '@lg': {
+              width: '50%',
+            }
+          }}>
             {testimonial}
           </Box>
         )}
@@ -235,9 +233,7 @@ export const HomePage = ({
             )}
           </Greetings>
 
-          <Clock
-            date={date}
-          />
+          <Clock />
 
           <CountryInfo>
             in london, uk

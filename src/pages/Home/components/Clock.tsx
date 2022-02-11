@@ -2,25 +2,19 @@ import { useEffect, useState } from 'react';
 import { styled } from '../../../../stitches.config';
 
 type ClockProps = {
-  date: Date,
 }
 
 export const Clock = ({
-  date,
 }: ClockProps) => {
-  const StyledClock = styled('h1', {
-    gridArea: 'clock',
-    display: 'flex',
-    marginBottom: '16px',
-  });
-
   const [timeToggle, setTimeToggle] = useState(false);
+  const [date, setDate] = useState(new Date());
 
   useEffect(() => {
     let timeoutId: number;
     const interval = setInterval(() => {
 
       setTimeToggle(true);
+      setDate(new Date());
 
       timeoutId = setTimeout(() => {
         setTimeToggle(false);
@@ -34,16 +28,26 @@ export const Clock = ({
     };
   }, []);
 
+  const StyledClock = styled('h1', {
+    gridArea: 'clock',
+    display: 'flex',
+    marginBottom: '16px',
+  });
+
+  const SecondsIndicator = styled('span', {
+    minWidth: '30px',
+
+    '@sm': {
+      minWidth: '60px',
+    },
+  });
+
   return (
     <StyledClock>
       {date.getHours().toString().padStart(2, '0')}
-        <span
-          style={{
-            minWidth: '30px',
-          }}
-        >
-          {timeToggle ? ':' : ' '}
-        </span>
+      <SecondsIndicator>
+        {timeToggle ? ':' : ' '}
+      </SecondsIndicator>
       {date.getMinutes().toString().padStart(2, '0')}
     </StyledClock>
   );
