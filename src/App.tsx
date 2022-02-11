@@ -15,12 +15,8 @@ function App() {
   })
 
   return (
-    <Box
-      className={'App ' + currentTheme}
-    >
-      <HomePage
-        onThemeChanged={(theme) => setCurrentTheme(theme)}
-      />
+    <Box>
+      <HomePage />
     </Box>
   )
 }

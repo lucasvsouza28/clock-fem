@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from '../../../../stitches.config';
 
 type ClockProps = {
@@ -32,7 +32,6 @@ export const Clock = ({
       clearTimeout(timeoutId);
     };
   }, []);
-
 
   return (
     <StyledClock>
