@@ -8,11 +8,9 @@ import { Clock } from "./components/Clock";
 import { Button } from "./components/Button";
 
 type HomePageProps = {
-  onThemeChanged: (theme: string & { className: string; selector: string; }) => void;
 }
 
 export const HomePage = ({
-  onThemeChanged,
 }: HomePageProps) => {
   const [date, setDate] = useState(new Date());
   const [datePart, setDatePart] = useState<'day' | 'night'>('day');
@@ -22,26 +20,19 @@ export const HomePage = ({
   useEffect(() => {
     const loremIpsum = new LoremIpsum();
     setTestimonial(loremIpsum.generateSentences());
-  }, []);
+  }, [setTestimonial]);
 
   useEffect(() => {
-
     const timeoutId = setTimeout(() => {
       setDate(new Date());
     }, 1000);
 
-
     return () => clearTimeout(timeoutId);
-
-  }, []);
+  }, [setDate]);
 
   useEffect(() => {
     setDatePart(date.getHours() < 18 ? 'day' : 'night');
-  }, [date]);
-
-  useEffect(() => {
-    onThemeChanged(datePart === 'day' ? lightTheme : theme);
-  }, [datePart, onThemeChanged]);
+  }, [date, setDatePart]);
 
   const fadeIn = keyframes({
     'from': {
@@ -113,6 +104,25 @@ export const HomePage = ({
     width: '100%',
     height: '30%',
 
+    gridTemplate:
+      `'timezone-label timezone-value'
+      'day-of-year-label day-of-year-value'
+      'day-of-week-label day-of-week-value'
+      'weeknr-label weeknr-value'
+      `,
+
+    '@sm': {
+      height: '40%',
+      paddingTop: '119px',
+      px: ' 64px',
+      gridTemplate:
+        `'timezone-label day-of-year-label'
+        'timezone-value day-of-year-value'
+        'day-of-week-label weeknr-label'
+        'day-of-week-value weeknr-value'
+        `,
+    },
+
     '@lg': {
       height: '50%',
     }
@@ -123,19 +133,36 @@ export const HomePage = ({
 
     fontSize: '10px',
     lineHeight: '28px',
-    letterSpacing: '2px'
+    letterSpacing: '2px',
+
+    '@sm': {
+      fontSize: '13px',
+      lineHeight: '28px',
+    }
   });
 
   const DetailsValue = styled('span', {
-    textAlign: 'right',
-
     fontSize: '20px',
     fontWeight: 'bold',
     lineHeight: '24px',
+    textAlign: 'right',
+
+    ['@sm']: {
+      textAlign: 'left',
+      fontSize: '40px',
+      lineHeight: '48px',
+    }
+  });
+
+  const Box = styled('div', {
+    display: 'flex',
+    height: '100vh',
   });
 
   return (
-    <>
+    <Box
+      className={ datePart === 'day' ? lightTheme : theme }
+    >
       <BackgroundImage
         type={datePart}
       />
@@ -180,18 +207,64 @@ export const HomePage = ({
       </Main>
 
       <Details>
-        <DetailsLabel>CURRENT TIMEZONE</DetailsLabel>
-        <DetailsValue>{Intl.DateTimeFormat().resolvedOptions().timeZone}</DetailsValue>
+        <DetailsLabel css={{
+          gridArea: 'timezone-label'
+        }}>
+          CURRENT TIMEZONE
+        </DetailsLabel>
+        <DetailsValue
+          css={{
+            gridArea: 'timezone-value'
+          }}
+        >
+          {Intl.DateTimeFormat().resolvedOptions().timeZone}
+        </DetailsValue>
 
-        <DetailsLabel>Day of the year</DetailsLabel>
-        <DetailsValue>{getDayOfYear(date)}</DetailsValue>
+        <DetailsLabel
+          css={{
+            gridArea: 'day-of-year-label'
+          }}
+        >
+          Day of the year
+        </DetailsLabel>
+        <DetailsValue
+          css={{
+            gridArea: 'day-of-year-value'
+          }}
+        >
+          {getDayOfYear(date)}
+        </DetailsValue>
 
-        <DetailsLabel>Day of the week</DetailsLabel>
-        <DetailsValue>{date.getDay()}</DetailsValue>
+        <DetailsLabel
+          css={{
+            gridArea: 'day-of-week-label'
+          }}
+        >
+          Day of the week
+        </DetailsLabel>
+        <DetailsValue
+          css={{
+            gridArea: 'day-of-week-value'
+          }}
+        >
+          {date.getDay()}
+        </DetailsValue>
 
-        <DetailsLabel>Week number</DetailsLabel>
-        <DetailsValue>{getWeek(date)}</DetailsValue>
+        <DetailsLabel
+          css={{
+            gridArea: 'weeknr-label'
+          }}
+        >
+          Week number
+        </DetailsLabel>
+        <DetailsValue
+          css={{
+            gridArea: 'weeknr-value'
+          }}
+        >
+          {getWeek(date)}
+        </DetailsValue>
       </Details>
-    </>
+    </Box>
   );
 };

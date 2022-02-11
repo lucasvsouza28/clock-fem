@@ -20,8 +20,6 @@ export const Button = ({
     alignItems: 'center',
     gap: '15px',
 
-    height: '40px',
-
     textTransform: 'uppercase',
 
     border: 'none',
@@ -45,6 +43,18 @@ export const Button = ({
 
     '&:active': {
       transform: 'scale(.97)'
+    },
+
+    height: '40px',
+
+    '@sm': {
+      height: '56px',
+
+      paddingRight: '8px',
+
+
+      fontSize: '16px',
+      lineHeight: '28px',
     }
   })
 
