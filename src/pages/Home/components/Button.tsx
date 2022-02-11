@@ -13,6 +13,8 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const StyledButton = styled('button', {
+    width: 'fit-content',
+
     cursor: 'pointer',
 
     display: "flex",

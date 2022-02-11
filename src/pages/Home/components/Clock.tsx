@@ -9,6 +9,7 @@ export const Clock = ({
   date,
 }: ClockProps) => {
   const StyledClock = styled('h1', {
+    gridArea: 'clock',
     display: 'flex',
     marginBottom: '16px',
   });

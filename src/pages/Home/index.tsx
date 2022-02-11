@@ -75,10 +75,15 @@ export const HomePage = ({
 
     '@sm': {
       padding: '6rem',
+    },
+
+    '@lg': {
+      px: '165px',
     }
   });
 
   const Greetings = styled('h4', {
+    gridArea: 'greetings',
     display: 'flex',
     alignItems: 'center',
     gap: '16px',
@@ -114,17 +119,19 @@ export const HomePage = ({
     '@sm': {
       height: '40%',
       paddingTop: '119px',
-      px: ' 64px',
+      px: '64px',
       gridTemplate:
-        `'timezone-label day-of-year-label'
-        'timezone-value day-of-year-value'
-        'day-of-week-label weeknr-label'
-        'day-of-week-value weeknr-value'
+        `'timezone-label divider day-of-year-label'
+        'timezone-value divider day-of-year-value'
+        'day-of-week-label divider weeknr-label'
+        'day-of-week-value divider weeknr-value'
         `,
     },
 
     '@lg': {
       height: '50%',
+
+      px: '165px',
     }
   });
 
@@ -138,6 +145,12 @@ export const HomePage = ({
     '@sm': {
       fontSize: '13px',
       lineHeight: '28px',
+    },
+
+    '@lg': {
+      fontSize: '15px',
+      lineHeight: '28px',
+      letterSpacing: '3px',
     }
   });
 
@@ -147,20 +160,37 @@ export const HomePage = ({
     lineHeight: '24px',
     textAlign: 'right',
 
-    ['@sm']: {
+    '@sm': {
       textAlign: 'left',
       fontSize: '40px',
       lineHeight: '48px',
+    },
+
+    '@lg': {
+      fontSize: '56px',
+      lineHeight: '68px',
     }
   });
 
-  const Box = styled('div', {
-    display: 'flex',
-    height: '100vh',
+  const CountryInfo = styled('h6', {
+    gridArea: 'country-info',
+
+    '@lg': {
+      fontSize: '24px',
+      fontWeight: 'bold',
+      lineHeight: '28px',
+      letterSpacing: '4.8px',
+    }
   });
+
+  const Box = styled('div', {});
 
   return (
     <Box
+      css={{
+        display: 'flex',
+        height: '100vh',
+      }}
       className={ datePart === 'day' ? lightTheme : theme }
     >
       <BackgroundImage
@@ -168,12 +198,31 @@ export const HomePage = ({
       />
       <Main>
         { !showDetais && (
-          <p>
+          <Box css={{ gridArea: 'testimonial' }}>
             {testimonial}
-          </p>
+          </Box>
         )}
 
-        <div>
+        <Box
+          css={{
+            width: '100%',
+
+            display: 'grid',
+            gridTemplate: `
+            'greetings'
+            'clock'
+            'country-info'
+            'button'
+            `,
+            '@lg': {
+              gridTemplate: `
+            'greetings greetings'
+            'clock clock'
+            'country-info button'
+            `
+            }
+          }}
+        >
           <Greetings>
             { datePart === 'day' ? (
               <>
@@ -190,20 +239,27 @@ export const HomePage = ({
             date={date}
           />
 
-          <h6>
+          <CountryInfo>
             in london, uk
-          </h6>
+          </CountryInfo>
 
           <Button
             open={showDetais}
             onClick={() => setShowDetais(!showDetais)}
             css={{
-              marginTop: '48px'
+              marginTop: '48px',
+              gridArea: 'button',
+
+              '@lg': {
+                marginTop: '0',
+                placeSelf: 'end',
+              }
             }}
           >
             { showDetais ? 'LESS' : 'MORE' }
           </Button>
-        </div>
+        </Box>
+
       </Main>
 
       <Details>
@@ -264,6 +320,15 @@ export const HomePage = ({
         >
           {getWeek(date)}
         </DetailsValue>
+
+        <Box
+          css={{
+            gridArea: 'divider',
+            width: '2px',
+            background: '#FFFFFF',
+            opacity: '0.25',
+          }}
+        />
       </Details>
     </Box>
   );
